@@ -1,5 +1,6 @@
 package org.nutz.ssdb4j.impl;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.nutz.ssdb4j.spi.Cmd;
@@ -23,6 +24,16 @@ public class SimpleClient implements SSDB {
 	public SimpleClient(String host, int port, int timeout) {
 		stream = new SocketSSDBStream(host, port, timeout);
 		this.conv = DefaultObjectConv.me;
+	}
+	
+	public void close() {
+		if (stream != null) {
+			try {
+				stream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	protected byte[] bytes(Object obj) {
@@ -71,7 +82,7 @@ public class SimpleClient implements SSDB {
 	}
 	
 	//----------------------------------------------------------------------------------
-
+	@Override
 	public Response get(Object key) {
 		return req(Cmd.get,bytes(key));
 	}
