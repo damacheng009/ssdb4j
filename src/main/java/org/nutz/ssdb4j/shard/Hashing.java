@@ -10,8 +10,7 @@ public interface Hashing {
 	public static final Hashing MD5 = new Hashing() {
 
 		public long hash(String key) {
-			// return hash(SafeEncoder.encode(key));
-			return hash(key);
+			return hash(SafeEncoder.encode(key));
 		}
 
 		public long hash(byte[] key) {

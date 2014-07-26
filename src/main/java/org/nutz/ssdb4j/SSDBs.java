@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.pool.impl.GenericObjectPool.Config;
@@ -13,7 +12,7 @@ import org.nutz.ssdb4j.pool.PoolSSDBStream;
 import org.nutz.ssdb4j.pool.SocketSSDBStreamPool;
 import org.nutz.ssdb4j.replication.ReplicationSSDMStream;
 import org.nutz.ssdb4j.shard.SSDBShardInfo;
-import org.nutz.ssdb4j.shard.ShardedSSDBClient;
+import org.nutz.ssdb4j.shard.ShardedSSDB;
 import org.nutz.ssdb4j.spi.Cmd;
 import org.nutz.ssdb4j.spi.Response;
 import org.nutz.ssdb4j.spi.SSDB;
@@ -37,20 +36,6 @@ public class SSDBs {
 	public static Charset DEFAULT_CHARSET = Charset.forName("UTF-8");
 	
 	public static final byte[] EMPTY_ARG = new byte[0];
-	
-	public static void main(String[] args) {
-		List<SSDBShardInfo> shards = 
-				Arrays.asList(new SSDBShardInfo("localhost", 8888, "host1"),
-				new SSDBShardInfo("localhost", 8889, "host2"));
-		
-		ShardedSSDBClient shardClient = shardedSimple(shards);
-		
-		for (int i = 0; i < 100000; ++i) {
-			shardClient.set("key" + i, "value" + i);
-		}
-		
-		shardClient.disconnect();
-	}
 
 	/**
 	 * 使用默认配置生成一个单连接的客户端
@@ -69,8 +54,8 @@ public class SSDBs {
 		return new SimpleClient(host, port, timeout);
 	}
 	
-	public static final ShardedSSDBClient shardedSimple(List<SSDBShardInfo> shards) {
-		return new ShardedSSDBClient(shards);
+	public static final ShardedSSDB sharded(List<SSDBShardInfo> shards) {
+		return new ShardedSSDB(shards);
 	}
 	
 	/**

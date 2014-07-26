@@ -31,7 +31,7 @@ public class SimpleClient implements SSDB {
 			try {
 				stream.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				// ignore
 			}
 		}
 	}
@@ -44,7 +44,6 @@ public class SimpleClient implements SSDB {
 		return conv.bytess(objs);
 	}
 	
-
 	protected final Response req(Cmd cmd, byte[] first, byte[][] lots) {
 		byte[][] vals = new byte[lots.length+1][];
 		vals[0] = first;

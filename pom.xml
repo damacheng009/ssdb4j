@@ -35,9 +35,9 @@
 	</dependencies>
 	<description>Another Java Driver for ssdb</description>
 	<scm>
-		<url>https://github.com/nutzam/ssdb4j.git</url>
-		<developerConnection>wendal</developerConnection>
-		<connection>https://github.com/nutzam/ssdb4j.git</connection>
+		<url>https://github.com/damacheng009/ssdb4j</url>
+		<connection>https://github.com/damacheng009/ssdb4j</connection>
+		<developerConnection>damacheng009</developerConnection>
 	</scm>
 	<issueManagement>
 		<system>github issue</system>

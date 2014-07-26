@@ -47,3 +47,42 @@ if (!resp.ok()) {
     log.info("name=" + resp.asString());
 }
 ```
+
+模仿jedis，提供sharding
+sharding只支持single key的命令，其他multi key等命令不支持
+----------------
+
+```
+private static ShardedSSDBClient shardClient;
+
+public static void main(String[] args) {
+	
+	Config config = new Config();
+	config.maxActive = 30;
+	config.maxIdle = 10;
+	config.maxWait = 1000 * 5;
+	config.minEvictableIdleTimeMillis = 1000 * 60;
+	config.minIdle = 10;
+	config.testOnBorrow = true;
+	
+	List<SSDBShardInfo> shards = 
+			Arrays.asList(new SSDBShardInfo("localhost", 8888, 2000, "host1", config),
+			new SSDBShardInfo("localhost", 8889, 2000, "host2", config));
+	
+	shardClient = sharded(shards);
+	
+	for (int i = 0; i < 1000; ++i) {
+		Thread thread = new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				Random r = new Random();
+				for (int i = 0; i < 1000; ++i) {
+					shardClient.set("key" + r.nextInt(), "value" + r.nextInt());
+				}
+				
+			}});
+		thread.start();
+	}
+}
+```
